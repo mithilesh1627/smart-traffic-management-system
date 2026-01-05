@@ -38,3 +38,10 @@ for name, path in {
 }.items():
     if path is None:
         raise ValueError(f"{name} is not set in .env")
+    
+VIDEO_SOURCE = Path(os.getenv('VIDEO_SOURCE'))
+COUNT_LINE_Y = os.getenv('COUNT_LINE_Y')
+ROI_AREA_PIXELS = os.getenv('ROI_AREA_PIXELS')
+CAMERA_ID = os.getenv('CAMERA_ID')
+MONGO_URI = os.getenv('MONGO_URI')
+METRIC_INTERVAL_SEC = os.getenv('METRIC_INTERVAL_SEC')
