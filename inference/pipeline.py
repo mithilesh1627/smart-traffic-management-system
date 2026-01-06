@@ -2,7 +2,7 @@ import cv2
 import time
 from datetime import datetime
 from ultralytics import YOLO
-from pathlib import Path
+
 from inference.tracker_adapter import extract_tracked_detections
 from traffic_metrics.vehicle_count import VehicleCounter
 from traffic_metrics.flow import FlowEstimator
@@ -24,8 +24,9 @@ density_calculator = DensityCalculator(ROI_AREA_PIXELS)
 metrics_collection = get_collection(MONGO_URI)
 
 
-cap = cv2.VideoCapture(str(VIDEO_SOURCE))
-
+cap = cv2.VideoCapture(VIDEO_SOURCE)
+# print("VIDEO_SOURCE =", VIDEO_SOURCE)
+# print("cap.isOpened() =", cap.isOpened())
 
 last_flush_time = time.time()
 interval_flow_values = []
@@ -34,6 +35,7 @@ interval_density_values = []
 
 while cap.isOpened():
     ret, frame = cap.read()
+    
     if not ret:
         break
 

@@ -2,7 +2,7 @@ import time
 
 class FlowEstimator:
     def __init__(self, interval_sec=60):
-        self.interval = interval_sec
+        self.interval = float(interval_sec)
         self.last_time = time.time()
         self.counter = 0
 
