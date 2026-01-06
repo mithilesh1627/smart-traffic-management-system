@@ -1,5 +1,4 @@
 from pathlib import Path
-import os
 from dotenv import load_dotenv
 import os
 
@@ -45,3 +44,4 @@ ROI_AREA_PIXELS = float(os.getenv('ROI_AREA_PIXELS'))
 CAMERA_ID = os.getenv('CAMERA_ID')
 MONGO_URI = os.getenv('MONGO_URI')
 METRIC_INTERVAL_SEC = float(os.getenv('METRIC_INTERVAL_SEC',10))
+
