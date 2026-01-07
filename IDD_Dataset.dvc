@@ -1,0 +1,6 @@
+outs:
+- md5: 3fcc12249120615307594c924cfba49e.dir
+  size: 29615285382
+  nfiles: 107130
+  hash: md5
+  path: IDD_Dataset
