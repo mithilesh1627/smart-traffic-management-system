@@ -1,0 +1,7 @@
+[core]
+    remote = dagshub
+['remote "dagshub"']
+    url = https://dagshub.com/mithilesh1627/smart-traffic-management-system.dvc
+    auth = basic
+    user = mithilesh1627
+    password = 1d1d94fda96878e4edd527b0bd8d02666ffda565
