@@ -2,7 +2,7 @@ import cv2
 import shutil
 from pathlib import Path
 from tqdm import tqdm
-from utils.config import RAW_IMG_DIR,TRAIN_SPLIT_METADATA,TRAIN_IMG_DIR,TRAIN_LABL_DIR
+from utils.airflow_config import RAW_IMG_DIR,TRAIN_SPLIT_METADATA,TRAIN_IMG_DIR,TRAIN_LABL_DIR
 
 
 def build_train_dataset():

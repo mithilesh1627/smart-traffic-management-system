@@ -1,10 +1,10 @@
 from ultralytics import YOLO
 from pathlib import Path
-from utils.config import DATASET_DIR,CONF_THRES,MODEL_PATH,TRAIN_IMG_DIR,TRAIN_LABL_DIR
+from utils.airflow_config import CONF_THRES,MODEL_PATH,TRAIN_IMG_DIR,TRAIN_LABL_DIR
 import os 
 SPLITS = ['train','test','val']
 
-model = YOLO(model='yolo11n.pt',task='detect',verbose=True)
+model = YOLO(model=MODEL_PATH,task='detect',verbose=True)
 
 def label_image(split):
     img_root = TRAIN_IMG_DIR

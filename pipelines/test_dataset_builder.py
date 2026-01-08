@@ -2,7 +2,7 @@ import cv2
 import shutil
 from pathlib import Path
 from tqdm import tqdm
-from utils.config import RAW_IMG_DIR, TEST_SPLIT_METADATA,TEST_IMG_DIR,TEST_LABL_DIR
+from utils.airflow_config import RAW_IMG_DIR, TEST_SPLIT_METADATA,TEST_IMG_DIR,TEST_LABL_DIR
 
 
 def build_test_dataset():

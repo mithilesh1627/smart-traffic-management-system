@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
 # Base paths
 PROJECT_ROOT = Path(os.getenv("PROJECT_ROOT"))
 DATASET_DIR = Path(os.getenv("DATASET_DIR"))
