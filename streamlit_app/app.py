@@ -2,8 +2,8 @@ import streamlit as st
 import mlflow
 from mongo_reader import load_metrics
 from mlflow_reader import load_mlflow_runs
-from config_streamlit import (VIDEO_SOURCE,MONGO_URI,DB_NAME,COLLECTION_NAME,EXPERIMENT_NAME)
-from charts import traffic_charts, vehicle_count_chart, mlflow_comparison
+from config_streamlit import (OUTPUT_DIR, VIDEO_SOURCE,MONGO_URI,DB_NAME,COLLECTION_NAME,EXPERIMENT_NAME)
+from charts import traffic_charts, vehicle_count_chart
 import sys
 from pathlib import Path
 
@@ -25,12 +25,16 @@ if df.empty:
     st.warning("No traffic data available yet")
     st.stop()
 
-# ------------------ Charts ------------------
+
 traffic_charts(df)
 vehicle_count_chart(df)
 
-
-st.divider()
-st.header(" Traffic Camera Feed")
-
-st.video(VIDEO_SOURCE)
+# st.divider()
+# st.header("Traffic Camera – Processed Output")
+# print(OUTPUT_DIR)
+# if OUTPUT_DIR.exists():
+#     with open(OUTPUT_DIR, "rb") as video_file:
+#         video_bytes = video_file.read()
+#         st.video(video_bytes)
+# else:
+#     st.warning("Processed video not found.")
