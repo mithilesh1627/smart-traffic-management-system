@@ -20,6 +20,7 @@ with DAG(
     default_args=default_args,
     start_date=datetime(2026,1,4),
     catchup=False,
+    schedule=None,
     tags=["dataset", "cv", "traffic",'valid','images']
     ) as dag:
 

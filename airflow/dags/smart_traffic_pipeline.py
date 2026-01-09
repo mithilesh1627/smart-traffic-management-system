@@ -9,7 +9,6 @@ default_args  = {
 with DAG(
     dag_id="smart_traffic_pipeline",
     start_date=datetime(2025, 1, 3),
-    
     default_args=default_args,
     catchup=False,
     tags=["dataset", "cv", "traffic",'test','test','train','images']

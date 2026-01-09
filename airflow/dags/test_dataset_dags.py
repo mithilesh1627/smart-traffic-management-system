@@ -18,7 +18,8 @@ with DAG(
     default_args=default_args,
     start_date=datetime(2026,1,4),
     catchup=False,
-    tags=["dataset", "cv", "traffic",'test','images']
+    tags=["dataset", "cv", "traffic",'test','images'],
+    schedule=None
     ) as dag:
 
     build_test_data = PythonOperator(
