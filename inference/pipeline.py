@@ -1,5 +1,4 @@
-import cv2
-
+from semver import process
 from inference.video_reader import VideoReader
 from inference.yolo_tracker import YOLOTracker
 from inference.metrics_aggregator import MetricsAggregator
@@ -9,10 +8,11 @@ from inference.mlflow_tracker import MLflowTracker
 from traffic_metrics.vehicle_count import VehicleCounter
 from traffic_metrics.flow import FlowEstimator
 from traffic_metrics.density import DensityCalculator
-
+from visualization.video_writer import VideoWriter
 from visualization.draw_utils import draw_tracks, draw_counting_line
 from utils.config import (
-    VIDEO_SOURCE,
+    
+    UPLOAD_PROCESSED_DIR,
     COUNT_LINE_Y,
     ROI_AREA_PIXELS,
     CAMERA_ID,
@@ -20,8 +20,24 @@ from utils.config import (
     METRIC_INTERVAL_SEC,
 )
 
+
+from pathlib import Path
+import argparse
+def parse_args():
+    parser = argparse.ArgumentParser(description="Smart Traffic Inference")
+    parser.add_argument(
+        "--video",
+        type=str,
+        required=True,
+        help="Path to input traffic video"
+    )
+    return parser.parse_args()
+
+
 def main():
-    video = VideoReader(VIDEO_SOURCE)
+    args = parse_args()
+
+    video = VideoReader(args.video)
     tracker = YOLOTracker()
     mongo_writer = MongoWriter(MONGO_URI)
     mlflow_tracker = MLflowTracker(
@@ -41,6 +57,15 @@ def main():
         METRIC_INTERVAL_SEC,
         CAMERA_ID
     )
+    UPLOAD_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    video_name = Path(args.video).name
+    print(f"Processing video: {video_name}")
+    processed_video_path = UPLOAD_PROCESSED_DIR / f"processed_{video_name}"
+    video_writer = VideoWriter(
+    output_path=processed_video_path,
+    fps=video.fps,
+    frame_size=video.frame_size
+)
 
     while video.is_opened():
         ret, frame = video.read()
@@ -60,14 +85,12 @@ def main():
 
         draw_counting_line(frame, COUNT_LINE_Y)
         draw_tracks(frame, detections, tracker.class_names)
-
-        cv2.imshow("Smart Traffic Management", frame)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+        video_writer.write(frame)
 
     video.release()
+    video_writer.release()
     mlflow_tracker.close()
-
 
 if __name__ == "__main__":
     main()
+    

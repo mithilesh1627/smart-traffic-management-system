@@ -46,3 +46,5 @@ CAMERA_ID = os.getenv('CAMERA_ID')
 MONGO_URI = os.getenv('MONGO_URI')
 METRIC_INTERVAL_SEC = float(os.getenv('METRIC_INTERVAL_SEC',10))
 
+UPLOAD_DIR = Path(os.getenv('UPLOAD_DIR'))
+UPLOAD_PROCESSED_DIR = Path(os.getenv('UPLOAD_PROCESSED_DIR'))

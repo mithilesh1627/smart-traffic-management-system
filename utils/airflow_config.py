@@ -37,7 +37,8 @@ VALID_IMG_DIR = DATASET_DIR / "Processed_dataset/valid/images"
 VALID_LABL_DIR = DATASET_DIR / "Processed_dataset/valid/labels"
 CONF_THRES = 0.8
 MODEL_PATH = PROJECT_ROOT /'yolo11n.pt'
-
+UPLOAD_DIR = Path(os.getenv('UPLOAD_DIR'))
+UPLOAD_PROCESSED_DIR = Path(os.getenv('UPLOAD_PROCESSED_DIR'))
 # Safety check
 for p in [
     PROJECT_ROOT,
