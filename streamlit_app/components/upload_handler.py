@@ -1,4 +1,4 @@
-from config_streamlit import UPLOAD_DIR
+from components.config_streamlit import UPLOAD_DIR
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
