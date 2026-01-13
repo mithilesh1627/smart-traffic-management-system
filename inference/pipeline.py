@@ -37,7 +37,7 @@ def main():
     args = parse_args()
 
     video = VideoReader(args.video)
-    tracker = YOLOTracker()  # ⚠ traffic classes filtered inside this
+    tracker = YOLOTracker()  #  traffic classes filtered inside this
     mongo_writer = MongoWriter(MONGO_URI)
 
     mlflow_tracker = MLflowTracker(
@@ -60,7 +60,8 @@ def main():
     )
 
     UPLOAD_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    video_name = Path(VIDEO_SOURCE).name
+    video_name = Path(args.video).name
+    print(video_name)
     processed_video_path = UPLOAD_PROCESSED_DIR / f"processed_{video_name}"
 
     video_writer = VideoWriter(
@@ -98,3 +99,8 @@ def main():
         video.release()
         video_writer.release()
         mlflow_tracker.close()
+
+
+
+if __name__ == "__main__":
+    main()

@@ -37,7 +37,7 @@ def show_video_analyzer():
 
     video_path = save_uploaded_video(uploaded_video)
     st.video(str(video_path))
-
+    
     if st.button(" Process Video"):
         with st.spinner("Running traffic inference..."):
             run_video_inference(video_path)
@@ -52,11 +52,12 @@ def show_video_analyzer():
         )
 
         if not df.empty:
-            st.subheader("📊 Traffic Summary")
+            st.subheader(" Traffic Summary")
             traffic_charts(df)
             vehicle_count_chart(df)
 
-            st.subheader("🎞️ Processed Output")
+            st.subheader(" Processed Output")
+            # st.write(UPLOAD_PROCESSED_DIR / f"processed_{video_path.name}")
             stream_video(
                 video_path=UPLOAD_PROCESSED_DIR / f"processed_{video_path.name}",
                 frame_skip=5,
