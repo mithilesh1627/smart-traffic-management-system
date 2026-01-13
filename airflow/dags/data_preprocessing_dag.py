@@ -5,7 +5,7 @@ from pipelines.test_dataset_builder import build_test_dataset
 from pipelines.valid_dataset_builder import build_valid_dataset
 from pipelines.dataset_labeling import auto_labeling
 from pipelines.mlflow_tracking import track_dataset_stats
-from utils.airflow_config import DATASET_DIR
+from utils.airflow_config import DATASET_DIR, TEST_SPLIT_METADATA
 
 default_args ={
         "owner": "Mithilesh Chaurasiya",
@@ -23,12 +23,24 @@ def build_dataset_dag():
     @task
     def preprocess():
         print("Preprocessing dataset...")
-        raw_dir = DATASET_DIR
-        if not raw_dir.exists():
-            raise FileNotFoundError("Raw dataset not found")
+        print("Checking dataset paths...")
+        print(f"DATASET_DIR: {DATASET_DIR}")
+        print(f"TEST_SPLIT_METADATA: {TEST_SPLIT_METADATA}")
+
+        if DATASET_DIR is None:
+            raise ValueError("DATASET_DIR env variable is not set")
+
+        if not DATASET_DIR.exists():
+            raise FileNotFoundError(f"Dataset directory not found: {DATASET_DIR}")
+
+        if not TEST_SPLIT_METADATA.exists():
+            raise FileNotFoundError("test.txt not found")
+        
+        print("Dataset preprocessing completed.")
 
     @task
     def build_train_dataset_task():
+        
         build_train_dataset()
 
 
@@ -40,9 +52,9 @@ def build_dataset_dag():
     def build_valid_dataset_task():
         build_valid_dataset()
 
-    @task
-    def track_dataset_stats_task():
-        track_dataset_stats()
+    # @task
+    # def track_dataset_stats_task():
+    #     track_dataset_stats()
     @task
     def auto_labeling_task():
         auto_labeling()
@@ -51,9 +63,9 @@ def build_dataset_dag():
     train_task = build_train_dataset_task()
     test_task = build_test_dataset_task()
     valid_task = build_valid_dataset_task()
-    mlflow_task = track_dataset_stats_task()
+    # mlflow_task = track_dataset_stats_task()
     auto_label = auto_labeling_task()
 
     raw >>[train_task , test_task , valid_task]
-    [train_task , test_task , valid_task] >> mlflow_task >> auto_label
+    [train_task , test_task , valid_task] >> auto_label
 dag = build_dataset_dag()
