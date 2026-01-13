@@ -1,5 +1,4 @@
 from pathlib import Path
-import argparse
 
 from utils.video_reader import VideoReader
 from utils.yolo_tracker import YOLOTracker
@@ -14,6 +13,7 @@ from visualization.video_writer import VideoWriter
 from visualization.draw_utils import draw_tracks
 
 from utils.config import (
+    VIDEO_SOURCE,
     UPLOAD_PROCESSED_DIR,
     ROI_AREA_PIXELS,
     CAMERA_ID,
@@ -21,23 +21,10 @@ from utils.config import (
     METRIC_INTERVAL_SEC,
 )
 
-# ---------------- CLI ----------------
-def parse_args():
-    parser = argparse.ArgumentParser(description="Smart Traffic Inference")
-    parser.add_argument(
-        "--video",
-        type=str,
-        required=True,
-        help="Path to input traffic video"
-    )
-    return parser.parse_args()
-
 # ---------------- MAIN ----------------
 def main():
-    args = parse_args()
-
-    video = VideoReader(args.video)
-    tracker = YOLOTracker()  # ⚠ traffic classes filtered inside this
+    video = VideoReader(VIDEO_SOURCE)
+    tracker = YOLOTracker()
     mongo_writer = MongoWriter(MONGO_URI)
 
     mlflow_tracker = MLflowTracker(
@@ -98,3 +85,7 @@ def main():
         video.release()
         video_writer.release()
         mlflow_tracker.close()
+
+
+if __name__ == "__main__":
+    main()

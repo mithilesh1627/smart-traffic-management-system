@@ -1,5 +1,5 @@
 import mlflow
-import mlflow.pyfunc
+
 from pathlib import Path
 
 class MLflowTracker:

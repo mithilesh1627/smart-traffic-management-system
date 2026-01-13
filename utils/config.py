@@ -44,7 +44,16 @@ COUNT_LINE_Y = int(os.getenv('COUNT_LINE_Y'))
 ROI_AREA_PIXELS = float(os.getenv('ROI_AREA_PIXELS'))
 CAMERA_ID = os.getenv('CAMERA_ID')
 MONGO_URI = os.getenv('MONGO_URI')
-METRIC_INTERVAL_SEC = float(os.getenv('METRIC_INTERVAL_SEC',10))
-
+METRIC_INTERVAL_SEC = float(os.getenv('METRIC_INTERVAL_SEC',2))
+DB_NAME = os.getenv('DB_NAME')
+COLLECTION_NAME = os.getenv(key='COLLECTION_NAME')
 UPLOAD_DIR = Path(os.getenv('UPLOAD_DIR'))
 UPLOAD_PROCESSED_DIR = Path(os.getenv('UPLOAD_PROCESSED_DIR'))
+TRAFFIC_CLASS_IDS = {0,1,2,3,5,6,7,9,10,11,12}  #  class IDs for traffic-related objects
+ALLOWED_CLASSES = {
+    "car",
+    "truck",
+    "bus",
+    "motorcycle",
+    "bicycle"
+}

@@ -4,6 +4,7 @@ from views.dashboard import show_dashboard
 from views.video_analysizer import show_video_analyzer
 from views.home import show_home
 from views.live_traffic import show_live_traffic
+from views.camera_dashboard import show_camera_dashboard
 
 st.set_page_config(
     page_title="Smart Traffic",
@@ -25,17 +26,24 @@ with st.sidebar:
 
     st.divider()
     
+    if st.button("Live Traffic", use_container_width=True):
+        st.session_state.page = "live"
+        st.rerun()
+        
     if st.button("Traffic Dashboard", use_container_width=True):
         st.session_state.page = "dashboard"
         st.rerun()
 
+    if st.button("Camera Dashboard", use_container_width=True):
+        st.session_state.page = "camera_dashboard"
+        st.rerun()
+        
     if st.button("Video Analyzer", use_container_width=True):
         st.session_state.page = "video"
         st.rerun()
     
-    if st.button("Live Traffic", use_container_width=True):
-        st.session_state.page = "live"
-        st.rerun()
+    
+
 
 # ---------------- ROUTER ----------------
 if st.session_state.page == "home":
@@ -43,6 +51,9 @@ if st.session_state.page == "home":
 
 elif st.session_state.page == "dashboard":
     show_dashboard()
+
+elif st.session_state.page == "camera_dashboard":
+    show_camera_dashboard()
 
 elif st.session_state.page == "video":
     show_video_analyzer()

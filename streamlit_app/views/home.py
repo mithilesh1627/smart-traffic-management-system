@@ -92,16 +92,20 @@ def show_home():
     st.markdown("###  Get Started")
 
     colA, colB = st.columns(2)
+    
 
     with colA:
-        if st.button(" Open Traffic Dashboard", use_container_width=True):
+        if st.button("Traffic Dashboard", use_container_width=True):
             st.session_state.page = "dashboard"
             st.rerun()
 
     with colB:
-        if st.button(" Analyze Traffic Video", use_container_width=True):
+        if st.button("Analyze Traffic Video", use_container_width=True):
             st.session_state.page = "video"
             st.rerun()
+    if st.button("Live Traffic Analysis", use_container_width=True):
+        st.session_state.page = "live_traffic"
+        st.rerun()
 
     # ---------------- FOOTER ----------------
     st.divider()
