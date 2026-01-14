@@ -4,10 +4,10 @@ from typing import Dict
 
 @dataclass(frozen=True)
 class YOLOTrainingParams:
-    epochs: int = 50
+    epochs: int = 30
     imgsz: int = 640
     batch: int = 16
-    device: int = 0
+    device: int = '0'
 
     # Optional future params
     lr0: float | None = None

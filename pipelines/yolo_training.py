@@ -28,6 +28,9 @@ def check_dataset_ready():
 def train_yolo_model():
     if not data_yaml.exists():
         raise FileNotFoundError("data.yaml not found")
+    if not done_file.exists():
+        raise AirflowSkipException("Dataset not ready")
+    print(" Dataset is ready for training")
     
     params_obj = YOLOTrainingParams()
     params = params_obj.to_dict()

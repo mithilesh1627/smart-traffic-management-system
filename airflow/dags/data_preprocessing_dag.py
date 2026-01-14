@@ -1,11 +1,13 @@
 from airflow.decorators import task, dag
 from datetime import datetime
+from pipelines.dataset_cleaner import clean_dataset
+from pipelines.dataset_validator import validate_labels_required, validate_structure_only
 from pipelines.mark_dataset_ready import mark_dataset_ready
 from pipelines.train_dataset_builder import build_train_dataset
 from pipelines.test_dataset_builder import build_test_dataset
 from pipelines.valid_dataset_builder import build_valid_dataset
 from pipelines.dataset_labeling import auto_labeling
-# from pipelines.mlflow_tracking import track_dataset_stats
+from pipelines.dataset_validator import validate_structure_only
 from utils.airflow_config import DATASET_DIR, TEST_SPLIT_METADATA
 
 default_args ={
@@ -53,25 +55,34 @@ def build_dataset_dag():
     def build_valid_dataset_task():
         build_valid_dataset()
 
-    # @task
-    # def track_dataset_stats_task():
-    #     track_dataset_stats()
     @task
     def auto_labeling_task():
         auto_labeling()
-    
+    @task
+    def validate_structure_task():
+        validate_structure_only()
+
     @task
     def mark_dataset_ready_task():
         mark_dataset_ready()
+
+    @task
+    def validate_labels_task():
+        validate_labels_required()
+    @task
+    def clean_unlabeled_images_task():
+        clean_dataset()
 
     raw = preprocess()
     train_task = build_train_dataset_task()
     test_task = build_test_dataset_task()
     valid_task = build_valid_dataset_task()
-    # mlflow_task = track_dataset_stats_task()
+    validate_structure=validate_structure_task()
+    validate_label = validate_labels_task()
+    clean_dataset_task = clean_unlabeled_images_task()
     auto_label = auto_labeling_task()
     mark_ready = mark_dataset_ready_task()
 
     raw >>[train_task , test_task , valid_task]
-    [train_task , test_task , valid_task] >> auto_label >> mark_ready
+    [train_task , test_task , valid_task] >> validate_structure >> auto_label >> clean_dataset_task >> validate_label >> mark_ready
 dag = build_dataset_dag()
