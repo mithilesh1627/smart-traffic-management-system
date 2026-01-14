@@ -25,14 +25,18 @@ VAL_SPLIT_METADATA   = DATASET_DIR / "val.txt"
 TEST_SPLIT_METADATA  = DATASET_DIR / "test.txt"
 
 # Processed datasets
-TRAIN_IMG_DIR = DATASET_DIR / "Processed_dataset/train/images"
-TRAIN_LABL_DIR = DATASET_DIR / "Processed_dataset/train/labels"
-TEST_IMG_DIR = DATASET_DIR / "Processed_dataset/test/images"
-TEST_LABL_DIR = DATASET_DIR / "Processed_dataset/test/labels"
+PROCESSED_DATASET = DATASET_DIR / "Processed_dataset"
 
-VALID_IMG_DIR = DATASET_DIR / "Processed_dataset/valid/images"
-VALID_LABL_DIR = DATASET_DIR / "Processed_dataset/valid/labels"
+TRAIN_IMG_DIR = PROCESSED_DATASET/"train/images"
+TRAIN_LABL_DIR = PROCESSED_DATASET /"train/labels"
+
+TEST_IMG_DIR = PROCESSED_DATASET / "test/images"
+TEST_LABL_DIR = PROCESSED_DATASET / "test/labels"
+
+VALID_IMG_DIR = PROCESSED_DATASET / "valid/images"
+VALID_LABL_DIR = PROCESSED_DATASET / "valid/labels"
 CONF_THRES = 0.8
 MODEL_PATH = PROJECT_ROOT / "yolo11n.pt"
 UPLOAD_DIR = PROJECT_ROOT / "user_upload_data"/ "uploads"
 UPLOAD_PROCESSED_DIR = PROJECT_ROOT / "user_upload_data"/ "outputs"
+YOLO_RUN_DIR = PROJECT_ROOT / "mlruns/yolo/traffic_yolo_v1"

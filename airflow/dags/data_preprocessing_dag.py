@@ -1,10 +1,11 @@
 from airflow.decorators import task, dag
 from datetime import datetime
+from pipelines.mark_dataset_ready import mark_dataset_ready
 from pipelines.train_dataset_builder import build_train_dataset
 from pipelines.test_dataset_builder import build_test_dataset
 from pipelines.valid_dataset_builder import build_valid_dataset
 from pipelines.dataset_labeling import auto_labeling
-from pipelines.mlflow_tracking import track_dataset_stats
+# from pipelines.mlflow_tracking import track_dataset_stats
 from utils.airflow_config import DATASET_DIR, TEST_SPLIT_METADATA
 
 default_args ={
@@ -13,10 +14,10 @@ default_args ={
     }
 
 @dag(
-    dag_id="build_dataset_dag",
-    start_date=datetime(2024, 1, 8),
+    dag_id="Dataset_Builder_dag",
+    start_date=datetime(2024, 1, 15),
     catchup=False,
-    tags=["dataset", "labeling"],
+    tags=["dataset", "labeling","training","preprocessing","train","valid"],
     default_args= default_args,  
     )
 def build_dataset_dag():
@@ -58,6 +59,10 @@ def build_dataset_dag():
     @task
     def auto_labeling_task():
         auto_labeling()
+    
+    @task
+    def mark_dataset_ready_task():
+        mark_dataset_ready()
 
     raw = preprocess()
     train_task = build_train_dataset_task()
@@ -65,7 +70,8 @@ def build_dataset_dag():
     valid_task = build_valid_dataset_task()
     # mlflow_task = track_dataset_stats_task()
     auto_label = auto_labeling_task()
+    mark_ready = mark_dataset_ready_task()
 
     raw >>[train_task , test_task , valid_task]
-    [train_task , test_task , valid_task] >> auto_label
+    [train_task , test_task , valid_task] >> auto_label >> mark_ready
 dag = build_dataset_dag()
