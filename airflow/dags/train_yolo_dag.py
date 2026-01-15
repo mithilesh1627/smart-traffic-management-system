@@ -1,7 +1,6 @@
 from airflow.decorators import dag, task
 from datetime import datetime
 from pipelines.dataset_validator import validate_images_train_valid
-from pipelines.dataset_validator import validate_images_train_valid
 from pipelines.mlflow_yolo_logger import log_yolo_model
 from pipelines.yolo_training import check_dataset_ready, train_yolo_model
 
