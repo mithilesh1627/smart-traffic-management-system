@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  airflow:
+    image: mithilesh1627/traffic-airflow:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow:/opt/airflow/dags
+    restart: always
+
+  inference:
+    image: mithilesh1627/traffic-inference:latest
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./videos:/app/videos
+
+  streamlit:
+    image: mithilesh1627/traffic-streamlit:latest
+    ports:
+      - "8501:8501"
+    depends_on:
+      - inference
