@@ -1,93 +1,85 @@
-import subprocess
 import mlflow
 from airflow.exceptions import AirflowSkipException
 from pipelines.training_params import YOLOTrainingParams
-from utils.airflow_config import PROCESSED_DATASET, MODEL_PATH,DATASET_DIR
-from pipelines.training_fingerprint import generate_training_signature
+from utils.airflow_config import PROCESSED_DATASET, MODEL_PATH, DATASET_DIR, YOLO_RUNS_DIR, MLRUNS_DIR
+from pipelines.training_fingerprint import generate_training_signature, get_git_commit_hash
 from pipelines.mlflow_dedup import training_already_done
 from pathlib import Path
+
 
 done_file = PROCESSED_DATASET / ".done"
 data_yaml = DATASET_DIR / "data.yaml"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-def get_dvc_dataset_hash():
-    return subprocess.check_output(
-        ["dvc", "rev-parse", "HEAD"],
-        cwd=PROJECT_ROOT,
-        text=True
-    ).strip()
+mlflow.set_tracking_uri(f"file://{MLRUNS_DIR}")
 
 def check_dataset_ready():    
     if not done_file.exists():
         raise AirflowSkipException("Dataset not ready")
-    print(" Dataset is ready for training")
-
+    print("Dataset is ready for training")
 
 def train_yolo_model():
+    import torch
+    import json
+    from ultralytics import YOLO
+
     if not data_yaml.exists():
         raise FileNotFoundError("data.yaml not found")
+
     if not done_file.exists():
         raise AirflowSkipException("Dataset not ready")
-    print(" Dataset is ready for training")
-    
-    params_obj = YOLOTrainingParams()
-    params = params_obj.to_dict()
 
-    #  Generate fingerprint
+    params = YOLOTrainingParams().to_dict()
+
     signature = generate_training_signature(
         MODEL_PATH,
         data_yaml,
         params
     )
 
-    #  Check for duplicate training
-    if training_already_done(signature):
-        raise AirflowSkipException(
-            "Identical training configuration already exists in MLflow"
-        )
+    model = YOLO(MODEL_PATH)
 
-    mlflow.set_experiment("Smart-Traffic-YOLO")
+    epoch_metrics = []
 
-    with mlflow.start_run(run_name="yolo_training") as run:
-        mlflow.log_param("training_signature", signature)
-        mlflow.log_params(params)
+    def on_epoch_end(trainer):
+        m = trainer.metrics
+        epoch_metrics.append({
+            "epoch": trainer.epoch,
+            "precision": float(m.get("metrics/precision(B)", 0)),
+            "recall": float(m.get("metrics/recall(B)", 0)),
+            "mAP50": float(m.get("metrics/mAP50(B)", 0)),
+            "mAP50_95": float(m.get("metrics/mAP50-95(B)", 0)),
+        })
 
-        print(" Starting YOLO training")
+    model.add_callback("on_fit_epoch_end", on_epoch_end)
 
-        cmd = [
-            "yolo",
-            "task=detect",
-            "mode=train",
-            f"model={MODEL_PATH}",
-            f"data={data_yaml}",
-            f"epochs={params['epochs']}",
-            f"imgsz={params['imgsz']}",
-            f"batch={params['batch']}",
-            f"device={params['device']}",
-            "project=mlruns/yolo",
-            "name=traffic_yolo_v1",
-        ]
+    model.train(
+        data=str(data_yaml),
+        epochs=params["epochs"],
+        imgsz=params["imgsz"],
+        batch=params["batch"],
+        device="cuda" if torch.cuda.is_available() else "cpu",
+        workers=0,
+        project=str(YOLO_RUNS_DIR),
+        name=params["training_name"],
+    )
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-        )
+    output_dir = YOLO_RUNS_DIR / params["training_name"]
 
-        #  Stream YOLO logs into Airflow UI
-        for line in process.stdout:
-            print(line.rstrip())
+    training_output = {
+        "training_name": params["training_name"],
+        "signature": signature,
+        "params": params,
+        "metrics": epoch_metrics,
+        "weights_path": str(output_dir / "weights" / "best.pt"),
+    }
 
-        process.wait()
+    output_path = output_dir / "training_output.json"
 
-        if process.returncode != 0:
-            mlflow.set_tag("training_status", "failed")
-            raise RuntimeError(" YOLO training failed")
+    with open(output_path, "w") as f:
+        json.dump(training_output, f, indent=2)
 
-        mlflow.set_tag("training_status", "success")
+    print(f"Training output saved → {output_path}")
 
-        print(" YOLO model training completed successfully")
+    return str(output_path)

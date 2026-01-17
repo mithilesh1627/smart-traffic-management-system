@@ -39,4 +39,5 @@ CONF_THRES = 0.8
 MODEL_PATH = PROJECT_ROOT / "yolo11n.pt"
 UPLOAD_DIR = PROJECT_ROOT / "user_upload_data"/ "uploads"
 UPLOAD_PROCESSED_DIR = PROJECT_ROOT / "user_upload_data"/ "outputs"
-YOLO_RUN_DIR = PROJECT_ROOT / "mlruns/yolo/traffic_yolo_v1"
+YOLO_RUNS_DIR = PROJECT_ROOT / "yolo_runs"
+MLRUNS_DIR = PROJECT_ROOT / "mlruns"

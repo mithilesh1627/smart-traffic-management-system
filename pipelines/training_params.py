@@ -1,17 +1,18 @@
 from dataclasses import dataclass, asdict
-from typing import Dict
+from typing import Dict,Literal
 
 
 @dataclass(frozen=True)
 class YOLOTrainingParams:
-    epochs: int = 30
+    training_name: str = "traffic_yolo"
+    epochs: int = 50
     imgsz: int = 640
     batch: int = 16
     device: int = '0'
-
-    # Optional future params
+    device: Literal["cpu", "cuda", "auto", "0", "1"] = "auto"
     lr0: float | None = None
     optimizer: str | None = None
+    verbose: bool = True
 
     def to_dict(self) -> Dict:
         # remove None values to keep signature clean

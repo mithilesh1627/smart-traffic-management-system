@@ -1,7 +1,7 @@
 import streamlit as st
 
 from views.dashboard import show_dashboard
-from views.video_analysizer import show_video_analyzer
+from views.video_analyzer import show_video_analyzer
 from views.home import show_home
 from views.live_traffic import show_live_traffic
 from views.camera_dashboard import show_camera_dashboard
@@ -30,9 +30,9 @@ with st.sidebar:
         st.session_state.page = "live"
         st.rerun()
         
-    if st.button("Traffic Dashboard", use_container_width=True):
-        st.session_state.page = "dashboard"
-        st.rerun()
+    # if st.button("Traffic Dashboard", use_container_width=True):
+    #     st.session_state.page = "dashboard"
+    #     st.rerun()
 
     if st.button("Camera Dashboard", use_container_width=True):
         st.session_state.page = "camera_dashboard"
@@ -49,8 +49,8 @@ with st.sidebar:
 if st.session_state.page == "home":
     show_home()
 
-elif st.session_state.page == "dashboard":
-    show_dashboard()
+# elif st.session_state.page == "dashboard":
+#     show_dashboard()
 
 elif st.session_state.page == "camera_dashboard":
     show_camera_dashboard()
@@ -59,7 +59,4 @@ elif st.session_state.page == "video":
     show_video_analyzer()
 
 elif st.session_state.page == "live_traffic":
-    show_live_traffic()
-
-elif st.session_state.page == "live":
     show_live_traffic()

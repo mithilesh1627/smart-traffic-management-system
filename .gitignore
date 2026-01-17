@@ -217,3 +217,5 @@ __marimo__/
 
 /IDD_Dataset
 /user_upload_data
+/mlruns
+/yolo_runs

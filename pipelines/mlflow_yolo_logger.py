@@ -1,48 +1,33 @@
+import json
 import mlflow
-import pandas as pd
 from pathlib import Path
-from utils.airflow_config import YOLO_RUN_DIR,DATASET_DIR
-from pipelines.mlflow_dvc_logger import log_dvc_metadata
-def log_yolo_model():
-    if not YOLO_RUN_DIR.exists():
-        raise FileNotFoundError("YOLO training output not found")
+from utils.airflow_config import MLRUNS_DIR
+from pipelines.training_fingerprint import get_git_commit_hash
 
-    weights_dir = YOLO_RUN_DIR / "weights"
-    results_csv = YOLO_RUN_DIR / "results.csv"
-    args_yaml = YOLO_RUN_DIR / "args.yaml"
 
-    best_model = weights_dir / "best.pt"
+def log_yolo_to_mlflow(training_output_path: str):
 
-    if not best_model.exists():
-        raise FileNotFoundError("best.pt not found")
-
+    mlflow.set_tracking_uri(f"file://{MLRUNS_DIR}")
     mlflow.set_experiment("Smart-Traffic-YOLO")
 
-    with mlflow.start_run(run_name="yolo_training_v1"):
+    with open(training_output_path) as f:
+        data = json.load(f)
 
-        log_dvc_metadata(DATASET_DIR)
+    with mlflow.start_run(run_name=data["training_name"]):
 
-        # 🔹 Training params
-        mlflow.log_param("epochs", 50)
-        mlflow.log_param("imgsz", 640)
-        mlflow.log_param("batch", 16)
+        mlflow.log_params(data["params"])
 
-        # 🔹 Metrics
-        if results_csv.exists():
-            df = pd.read_csv(results_csv)
-            last = df.iloc[-1]
+        for m in data["metrics"]:
+            step = m["epoch"]
+            mlflow.log_metric("precision", m["precision"], step=step)
+            mlflow.log_metric("recall", m["recall"], step=step)
+            mlflow.log_metric("mAP50", m["mAP50"], step=step)
+            mlflow.log_metric("mAP50_95", m["mAP50_95"], step=step)
 
-            mlflow.log_metrics({
-                "precision": float(last["metrics/precision(B)"]),
-                "recall": float(last["metrics/recall(B)"]),
-                "map50": float(last["metrics/mAP50(B)"]),
-                "map5095": float(last["metrics/mAP50-95(B)"]),
-            })
+        mlflow.log_artifact(data["weights_path"])
 
-        #  Model artifact
-        mlflow.log_artifact(str(best_model), artifact_path="model")
+        mlflow.set_tag("training_signature", data["signature"])
+        mlflow.set_tag("git_commit", get_git_commit_hash())
+        mlflow.set_tag("pipeline", "airflow")
 
-        #  Config artifacts
-        mlflow.log_artifact(str(args_yaml), artifact_path="config")
-
-        print(" YOLO model + DVC lineage logged")
+        print("MLflow logging completed")

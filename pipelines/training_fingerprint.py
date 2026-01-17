@@ -4,13 +4,16 @@ import subprocess
 from pathlib import Path
 from utils.airflow_config import PROJECT_ROOT
 
-
-def get_dvc_dataset_hash():
-    return subprocess.check_output(
-        ["git", "hash-object", "IDD_Dataset.dvc"],
-        cwd=PROJECT_ROOT,
-        text=True
-    ).strip()
+def get_git_commit_hash():
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=PROJECT_ROOT,
+            text=True
+        ).strip()
+    except Exception as e:
+        print(f"[WARN] Git hash not available: {e}")
+        return "not_available"
 
 def file_hash(path: Path):
     h = hashlib.sha256()
@@ -26,7 +29,7 @@ def generate_training_signature(
     payload = {
         "model": str(model_path),
         "data_yaml_hash": file_hash(data_yaml),
-        "dvc_commit": get_dvc_dataset_hash(),
+        "dvc_commit": get_git_commit_hash(),
         "params": params,
     }
 
