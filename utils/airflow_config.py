@@ -41,3 +41,10 @@ UPLOAD_DIR = PROJECT_ROOT / "user_upload_data"/ "uploads"
 UPLOAD_PROCESSED_DIR = PROJECT_ROOT / "user_upload_data"/ "outputs"
 YOLO_RUNS_DIR = PROJECT_ROOT / "yolo_runs"
 MLRUNS_DIR = PROJECT_ROOT / "mlruns"
+
+# MLflow
+MLFLOW_TRACKING_URI="https://dagshub.com/mithilesh1627/smart-traffic-management-system.mlflow"
+MLFLOW_EXPERIMENT_NAME="YOLO_Traffic_Training"
+TRAINING_REGISTRY = PROJECT_ROOT / "artifacts" / "training_registry"
+TRAINING_REGISTRY.mkdir(parents=True, exist_ok=True)
+output_path = YOLO_RUNS_DIR /"traffic_yolo"/ "training_output.json"

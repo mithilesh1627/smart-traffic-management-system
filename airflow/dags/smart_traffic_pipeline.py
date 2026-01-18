@@ -11,6 +11,7 @@ with DAG(
     start_date=datetime(2025, 1, 3),
     default_args=default_args,
     catchup=False,
+    schedule="0 6 * * *",
     tags=["dataset", "cv", "traffic",'test','test','train','images']
     ) as dag:
 

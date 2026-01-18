@@ -20,7 +20,8 @@ default_args ={
     start_date=datetime(2024, 1, 15),
     catchup=False,
     tags=["dataset", "labeling","training","preprocessing","train","valid"],
-    default_args= default_args,  
+    default_args= default_args, 
+    schedule="0 0 * * *", 
     )
 def build_dataset_dag():
     @task

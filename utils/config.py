@@ -44,6 +44,7 @@ COUNT_LINE_Y = int(os.getenv('COUNT_LINE_Y'))
 ROI_AREA_PIXELS = float(os.getenv('ROI_AREA_PIXELS'))
 CAMERA_ID = os.getenv('CAMERA_ID')
 MONGO_URI = os.getenv('MONGO_URI')
+INFERENCE_COLLECTION_NAME = os.getenv('INFERENCE_COLLECTION_NAME','inference_results')
 METRIC_INTERVAL_SEC = float(os.getenv('METRIC_INTERVAL_SEC',2))
 DB_NAME = os.getenv('DB_NAME')
 COLLECTION_NAME = os.getenv(key='COLLECTION_NAME')
@@ -57,3 +58,12 @@ ALLOWED_CLASSES = {
     "motorcycle",
     "bicycle"
 }
+AGGREGATED_COLLECTION_NAME = os.getenv('AGGREGATED_COLLECTION_NAME','traffic_analytics_hourly')
+# DAGsHub
+DVC_REMOTE_NAME=os.getenv("DVC_REMOTE_NAME")
+DVC_REMOTE_URL=os.getenv("DVC_REMOTE_URL")
+DAGSHUB_USERNAME=os.getenv("DAGSHUB_USERNAME")
+DAGSHUB_TOKEN=os.getenv("DAGSHUB_TOKEN")
+# MLflow
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
+MLFLOW_EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT_NAME")

@@ -1,9 +1,8 @@
-import mlflow
 from airflow.exceptions import AirflowSkipException
 from pipelines.training_params import YOLOTrainingParams
 from utils.airflow_config import PROCESSED_DATASET, MODEL_PATH, DATASET_DIR, YOLO_RUNS_DIR, MLRUNS_DIR
-from pipelines.training_fingerprint import generate_training_signature, get_git_commit_hash
-from pipelines.mlflow_dedup import training_already_done
+from pipelines.training_fingerprint import generate_training_signature
+from pipelines.mlflow_dedup import (training_already_done,register_training)
 from pathlib import Path
 
 
@@ -12,23 +11,28 @@ data_yaml = DATASET_DIR / "data.yaml"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-mlflow.set_tracking_uri(f"file://{MLRUNS_DIR}")
-
 def check_dataset_ready():    
     if not done_file.exists():
         raise AirflowSkipException("Dataset not ready")
+
+    if not data_yaml.exists():
+        raise FileNotFoundError("data.yaml not found")
+
     print("Dataset is ready for training")
+
 
 def train_yolo_model():
     import torch
     import json
     from ultralytics import YOLO
+    
+    if not done_file.exists():
+        raise AirflowSkipException("Dataset not ready")
 
     if not data_yaml.exists():
         raise FileNotFoundError("data.yaml not found")
 
-    if not done_file.exists():
-        raise AirflowSkipException("Dataset not ready")
+    print("Dataset is ready for training")
 
     params = YOLOTrainingParams().to_dict()
 
@@ -37,6 +41,11 @@ def train_yolo_model():
         data_yaml,
         params
     )
+    if training_already_done(signature):
+        raise AirflowSkipException(
+        f"Training already completed for signature {signature}"
+    )
+
 
     model = YOLO(MODEL_PATH)
 
@@ -63,7 +72,9 @@ def train_yolo_model():
         workers=0,
         project=str(YOLO_RUNS_DIR),
         name=params["training_name"],
+        exist_ok =True
     )
+
 
     output_dir = YOLO_RUNS_DIR / params["training_name"]
 
@@ -81,5 +92,15 @@ def train_yolo_model():
         json.dump(training_output, f, indent=2)
 
     print(f"Training output saved → {output_path}")
+
+    register_training(
+    signature,
+    {
+        "training_name": params["training_name"],
+        "weights_path": str(output_dir / "weights" / "best.pt"),
+        "params": params,
+        "dataset": str(data_yaml),
+    }
+)
 
     return str(output_path)

@@ -17,7 +17,7 @@ from traffic_metrics.vehicle_count import VehicleCounter
 from traffic_metrics.flow import FlowEstimator
 from traffic_metrics.density import DensityCalculator
 from visualization.draw_utils import draw_tracks
-from utils.mongo import get_collection
+from utils.mongo_helper import get_collection
 from components.camera_utils import detect_cameras
 from utils.config import (
     ROI_AREA_PIXELS,

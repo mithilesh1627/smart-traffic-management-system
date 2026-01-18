@@ -5,7 +5,7 @@ from typing import Dict,Literal
 @dataclass(frozen=True)
 class YOLOTrainingParams:
     training_name: str = "traffic_yolo"
-    epochs: int = 50
+    epochs: int = 1
     imgsz: int = 640
     batch: int = 16
     device: int = '0'

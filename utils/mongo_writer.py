@@ -1,5 +1,5 @@
 
-from utils.mongo import get_collection
+from utils.mongo_helper import get_collection
 
 class MongoWriter:
     def __init__(self, mongo_uri):
