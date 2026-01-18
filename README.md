@@ -1,12 +1,10 @@
 #  Smart Traffic Management System
-
+---
 **End-to-End Computer Vision + MLOps Pipeline using YOLO, Airflow, MLflow & DVC**
 
 This project implements a production-grade **Smart Traffic Management System** that processes traffic videos to detect, track, and analyze vehicles. The system is fully automated using **Apache Airflow**, supports **dataset versioning with DVC**, and tracks experiments using **MLflow**.
 
-Designed as a **resume-grade flagship MLOps + Computer Vision project**.
 
----
 
 ## 🎯 Problem Statement & Motivation
 
@@ -20,7 +18,7 @@ that:
 - Automates training and inference using MLOps best practices
 - Enables rapid experimentation and deployment of CV models
 
----
+
 ## ✨ Key Features
 
 | Feature | Description |
@@ -32,7 +30,7 @@ that:
 | 🔁 Experiment Tracking | MLflow logging & reproducibility |
 | 📊 Visualization | Streamlit dashboards |
 
----
+
 ## 🧰 Tech Stack
 
 | Layer | Tools |
@@ -45,7 +43,8 @@ that:
 | Database | MongoDB |
 | Visualization | Streamlit, Plotly |
 | Language | Python 
----
+
+
 ## 📊 Model Performance (Detection)
 
 The YOLO-based object detection model was trained on the **India Driving Dataset (IDD)** and evaluated on the validation split.  
@@ -102,21 +101,11 @@ Only models that pass performance validation are:
 - Used by the inference pipeline
 
 
-
-### 🔗 Training → Inference Traceability
-
-Each inference run is linked to:
-
-- **MLflow Model Version**
-- **MLflow Run ID**
-- **DVC Dataset Hash**
-
 This ensures:
 
 ```text
 Dataset Version → Model Version → Inference Output
 ```
----
 
 ## 📁 Project Structure
 >  **Repository Overview**  
@@ -258,7 +247,6 @@ smart-traffic-management-system/        # End-to-end Smart Traffic Management (C
 
 ```
 
----
 
 ## 🏗️ System Architecture
 
@@ -305,16 +293,14 @@ The system is orchestrated using Apache Airflow with modular DAGs:
 
 | DAG Name | Responsibility |
 |--------|----------------|
-| data_preprocessing_dag | Dataset cleaning, validation, and auto-labeling |
+| data_preprocessing_dag | Dataset cleaning, validation, Split-wise dataset processing and auto-labeling |
 | train_yolo_dag | YOLO training with MLflow & DVC integration |
-| smart_traffic_pipeline | End-to-end pipeline from data → inference |
-| train/test/valid DAGs | Split-wise dataset processing |
+| traffic_inference_analytics_dag |  data → inference |
 
 Each DAG is designed to be:
 - Idempotent
 - Retry-safe
 - Independently triggerable
-
 
 
 ##  Airflow DAG Orchestration
@@ -482,7 +468,7 @@ IDD_Dataset/
     > Model retraining becomes fully traceable
 
 
-###🔗 Dataset Hash Example
+### 🔗 Dataset Hash Example
 
 Check dataset status using:
 ```bash
@@ -556,7 +542,6 @@ Resulting in:
     Identical training configuration
     Identical model behavior
     
----
 
 ## 📊 Experiment Tracking with MLflow
 
@@ -613,7 +598,6 @@ For every YOLO training run, MLflow automatically logs:
 - **DVC dataset hash**
 - Train / validation / test split info
 
----
 
 ### 🔁 MLflow Run Structure
 
@@ -672,7 +656,7 @@ If the same signature already exists in MLflow:
     ✔ GPU cost is reduced
 
 
-♻️ Reproducibility Guarantee
+#### ♻️ Reproducibility Guarantee
 
 Any past experiment can be reproduced exactly using:
 ```bash
