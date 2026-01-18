@@ -836,7 +836,7 @@ If you have any questions, suggestions, or collaboration ideas, feel free to rea
     📧 Email: mithileshchaurasiya2000@gmail.com
     🔗 LinkedIn: [https://www.linkedin.com/in/mithilesh-chaurasiya](https://www.linkedin.com/in/mithilesh1627/)
 
-#####⭐ If you find this project useful, consider giving it a star on GitHub — it really helps!
+##### ⭐ If you find this project useful, consider giving it a star on GitHub — it really helps!
 
 ---
 <p align="center">
