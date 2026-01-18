@@ -5,7 +5,7 @@ from views.video_analyzer import show_video_analyzer
 from views.home import show_home
 from views.live_traffic import show_live_traffic
 from views.camera_dashboard import show_camera_dashboard
-
+from views.hourly_dashboard import show_hourly_dashboard
 st.set_page_config(
     page_title="Smart Traffic",
     layout="wide"
@@ -30,9 +30,9 @@ with st.sidebar:
         st.session_state.page = "live"
         st.rerun()
         
-    # if st.button("Traffic Dashboard", use_container_width=True):
-    #     st.session_state.page = "dashboard"
-    #     st.rerun()
+    if st.button("Hourly Traffic Dashboard", use_container_width=True):
+        st.session_state.page = "hourly_dashboard"
+        st.rerun()
 
     if st.button("Camera Dashboard", use_container_width=True):
         st.session_state.page = "camera_dashboard"
@@ -49,8 +49,8 @@ with st.sidebar:
 if st.session_state.page == "home":
     show_home()
 
-# elif st.session_state.page == "dashboard":
-#     show_dashboard()
+elif st.session_state.page == "hourly_dashboard":
+    show_hourly_dashboard()
 
 elif st.session_state.page == "camera_dashboard":
     show_camera_dashboard()

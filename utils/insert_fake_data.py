@@ -55,10 +55,10 @@ VEHICLE_CLASSES = ["car", "truck", "bus", "motorcycle"]
 
 
 from pymongo import MongoClient
-from utils.config import MONGO_URI, DB_NAME, INFERENCE_COLLECTION_NAME
+from utils.config import MONGO_URI, DB_NAME, AGGREGATED_COLLECTION_NAME
 
 # ---------------- CONFIG ----------------
-COLLECTION = INFERENCE_COLLECTION_NAME
+COLLECTION = AGGREGATED_COLLECTION_NAME
 
 CAMERA_ID = "CAM_01"
 

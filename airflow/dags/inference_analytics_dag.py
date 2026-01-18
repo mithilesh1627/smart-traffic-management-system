@@ -52,8 +52,8 @@ def traffic_analytics_dag():
         store(final_doc)
 
     raw = fetch_raw_metrics()
-    aggregated = aggregate_metrics(raw)
-    store_analytics(aggregated)
+    aggregated = aggregate_metrics()
+    store_ = store_analytics(aggregated)
 
-
-# dag = traffic_analytics_dag()
+    raw >> aggregated >> store_    
+dag = traffic_analytics_dag()

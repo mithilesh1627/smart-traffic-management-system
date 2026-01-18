@@ -6,14 +6,11 @@ from utils.config import (
     INFERENCE_COLLECTION_NAME,
 )
 
-def store(**kwargs):
+def store(doc):
     """
     Store aggregated analytics safely (idempotent).
     """
-
-    ti = kwargs["ti"]
-    doc = ti.xcom_pull(task_ids="aggregate_metrics")
-
+    print("Storing aggregated inference analytics...")
     if not doc:
         print("No aggregated document to store.")
         return
@@ -21,18 +18,20 @@ def store(**kwargs):
     col = get_collection(
         MONGO_URI,
         DB_NAME,
-        INFERENCE_COLLECTION_NAME
+         "aggregated_metrics"
     )
-
+    print("Preparing document for storage...")
+    
     doc["created_at"] = datetime.utcnow()
-
+    
+    print("Upserting document into MongoDB...")
     unique_filter = {
         "camera_id": doc["camera_id"],
         "window_size": doc["window_size"],
         "start_time": doc["start_time"],
         "end_time": doc["end_time"],
     }
-
+    print(f"Unique filter for upsert: {unique_filter}")
     col.update_one(
         unique_filter,
         {"$set": doc},
@@ -43,4 +42,4 @@ def store(**kwargs):
         f"Stored analytics | "
         f"Camera={doc['camera_id']} | "
         f"Window={doc['start_time']} → {doc['end_time']}"
-    )
+        )

@@ -131,6 +131,10 @@ It provides:
             st.session_state.page = "video"
             st.rerun()
 
+    if st.button("Hourly Traffic Dashboard", use_container_width=True):
+        st.session_state.page = "hourly_dashboard"
+        st.rerun()
+        
     st.divider()
 
     # ================= FOOTER =================

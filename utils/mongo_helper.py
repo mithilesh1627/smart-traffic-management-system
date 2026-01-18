@@ -1,6 +1,8 @@
 from pymongo import MongoClient, errors
 from datetime import datetime, timedelta
 
+from pyparsing import col
+
 # ---------------- Connect to cluster ----------------
 _client = None
 
@@ -15,9 +17,10 @@ def get_collection(uri: str, db_name="traffic_system", collection_name="metrics"
     db = client[db_name]
     col = db[collection_name]
 
-    # # ensure indexes
-    # col.create_index("timestamp")
-    # col.create_index("camera_id")
+    # ensure indexes
+    col.create_index("camera_id")
+    col.create_index("start_time")
+    col.create_index("end_time")
 
     return col
 
