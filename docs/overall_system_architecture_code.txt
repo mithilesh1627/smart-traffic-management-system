@@ -1,0 +1,121 @@
+/*Run this code on https://mermaid.ai/ (remove this line while running code)*/
+---
+config:
+  theme: redux-dark
+  look: classic
+  layout: dagre
+---
+flowchart TB
+classDef user fill:#2c3e50,stroke:#ffffff,color:#ffffff
+classDef ui fill:#8e44ad,stroke:#ffffff,color:#ffffff
+classDef app fill:#2980b9,stroke:#ffffff,color:#ffffff
+classDef db fill:#16a085,stroke:#ffffff,color:#ffffff
+classDef data fill:#d35400,stroke:#ffffff,color:#ffffff
+classDef train fill:#c0392b,stroke:#ffffff,color:#ffffff
+classDef infer fill:#27ae60,stroke:#ffffff,color:#ffffff
+classDef airflow fill:#f39c12,stroke:#ffffff,color:#000000
+classDef mlflow fill:#34495e,stroke:#ffffff,color:#ffffff
+classDef storage fill:#7f8c8d,stroke:#ffffff,color:#ffffff
+subgraph User["👤 User Layer"]
+    U1["Traffic Operator or City Admin"]
+end
+class U1 user
+
+subgraph UI["🎨 Streamlit Dashboard"]
+    UI1["Live CCTV Dashboard"]
+    UI2["Hourly Analytics Dashboard"]
+    UI3["Camera-wise Analytics"]
+    UI4["Video Analyzer"]
+end
+class UI1,UI2,UI3,UI4 ui
+
+subgraph App["🧠 Application Layer"]
+    A1["Streamlit Backend Logic"]
+    A2["MongoDB Data Access Layer"]
+end
+class A1,A2 app
+
+subgraph DB["🗄️ MongoDB"]
+    M1["inference_results (raw)"]
+    M2["aggregated_metrics"]
+end
+class M1,M2 db
+
+subgraph Data["📥 Data Layer"]
+    D1["Raw Traffic Videos"]
+    D2["Validating & Preprocessing Dataset"]
+    D3["Validate training & valid dataset split"]
+    D4["DVC Versioned Dataset"]
+    D5["Dataset Version Hash (dvc.lock md5)"]
+end
+class D1,D2,D3,D4,D5 data
+
+subgraph Training["🏋️ YOLO Training & Registry"]
+    T1["YOLO Training Pipeline"]
+    T2["MLflow Experiment Tracking"]
+    T3["YOLO Model Registry"]
+end
+class T1,T2,T3 train
+
+subgraph Inference["🤖 Inference Pipeline"]
+    I1["Inference Service (load model by version tag)"]
+    I2["Object Tracking (ByteTrack / DeepSORT)"]
+    I3["Traffic Metrics Engine (Counting / Flow / Density)"]
+end
+class I1,I2,I3 infer
+
+subgraph Airflow["🛠️ Apache Airflow"]
+    DAG1["Dataset_Builder_dag"]
+    DAG2["training_YOLO_model_dag (skip if signature exists)"]
+    DAG3["traffic_inference_analytics_dag"]
+end
+class DAG1,DAG2,DAG3 airflow
+
+subgraph MLflow["📊 MLflow Experiment Tracking"]
+    F1["Experiment: YOLO_Traffic_Training"]
+    F2["Run: Training Session"]
+    F3["Model Signature (dataset hash + params)"]
+    F4["Model Artifacts"]
+    F5["Model Version Tag (v1 / v2 / Production)"]
+end
+class F1,F2,F3,F4,F5 mlflow
+
+subgraph Storage["🗄 DagHub / Cloud Storage"]
+    S1["DVC Dataset Storage (~22GB)"]
+end
+class S1 storage
+U1 --> UI
+UI --> A1
+A1 --> A2
+A2 --> M1 & M2
+
+D1 --> DAG1
+D2 --> D3
+D3 --> D4
+D4 --> D5
+D5 --> S1 & T1
+S1 --> DAG2
+
+T1 --> T2
+T2 --> F1
+F1 --> F2
+F2 --> F3
+F3 --> F4
+F4 --> F5
+F5 --> T3
+
+T3 --> I1
+I1 --> I2
+I2 --> I3
+I3 --> M1 & M2
+
+M1 --> UI
+M2 --> UI
+
+DAG1 -.-> D2
+DAG2 -.-> T1
+DAG3 -.-> I1 & I2 & I3
+
+linkStyle 0 stroke-dasharray: 5 5,fill:none
+linkStyle 1 stroke-dasharray: 5 5,fill:none
+linkStyle 2 stroke-dasharray: 5 5,fill:none
