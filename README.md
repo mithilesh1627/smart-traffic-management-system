@@ -832,12 +832,13 @@ If you’d like to improve this project, feel free to contribute in any of the f
 
 If you have any questions, suggestions, or collaboration ideas, feel free to reach out.
 
-👤 Author: Mithilesh Chaurasiya
-📧 Email: mithileshchaurasiya2000@gmail.com
-🔗 LinkedIn: [https://www.linkedin.com/in/mithilesh-chaurasiya](https://www.linkedin.com/in/mithilesh1627/)
-⭐ If you find this project useful, consider giving it a star on GitHub — it really helps!
+    👤 Author: Mithilesh Chaurasiya 
+    📧 Email: mithileshchaurasiya2000@gmail.com
+    🔗 LinkedIn: [https://www.linkedin.com/in/mithilesh-chaurasiya](https://www.linkedin.com/in/mithilesh1627/)
 
+#####⭐ If you find this project useful, consider giving it a star on GitHub — it really helps!
 
+---
 <p align="center">
   Built with  by <b>Mithilesh Chaurasiya</b>  
   <br/>
