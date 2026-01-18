@@ -797,6 +797,47 @@ Open in browser:
 
 <hr/>
 
+## 🤝 Contribution
+
+Contributions are welcome and appreciated! 🚀  
+If you’d like to improve this project, feel free to contribute in any of the following ways:
+
+### ✅ Ways to Contribute
+    - Improve model performance or training strategies
+    - Add new traffic analytics metrics
+    - Optimize Airflow DAGs or pipeline design
+    - Enhance Streamlit dashboard UI/UX
+    - Improve documentation or code readability
+    - Add new MLOps features (monitoring, alerts, CI/CD, etc.)
+
+### 🔁 Contribution Workflow
+    1. Fork the repository  
+    2. Create a new feature branch  
+   ```bash
+       git checkout -b feature/your-feature-name
+  ```
+    3. Commit your changes
+  ```bash
+    git commit -m "Add: meaningful commit message"
+  ```
+    4. Push to your fork
+  ``` bash 
+  git push origin feature/your-feature-name
+  ```
+
+  5. Create a Pull Request
+    All pull requests will be reviewed before merging.
+
+## 📬 Contact
+
+If you have any questions, suggestions, or collaboration ideas, feel free to reach out.
+
+👤 Author: Mithilesh Chaurasiya
+📧 Email: mithileshchaurasiya2000@gmail.com
+🔗 LinkedIn: [https://www.linkedin.com/in/mithilesh-chaurasiya](https://www.linkedin.com/in/mithilesh1627/)
+⭐ If you find this project useful, consider giving it a star on GitHub — it really helps!
+
+
 <p align="center">
   Built with  by <b>Mithilesh Chaurasiya</b>  
   <br/>
