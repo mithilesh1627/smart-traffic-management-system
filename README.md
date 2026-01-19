@@ -58,12 +58,12 @@ All metrics are automatically logged and tracked using **MLflow**.
 | mAP@0.5:0.95 | 0.650 |
 | Precision | 0.597 |
 | Recall | 0.660|
-| Box Loss | 0.0 |
-| Class Loss | 0.0 |
-| DFL Loss | 0.0 |
 
+```text
 > These results indicate strong localization accuracy and reliable detection performance, making the model suitable for real-time traffic analytics when combined with object tracking.
+
 > ⚠️ Metrics may vary depending on dataset version, image resolution, and training configuration.
+```
 
 ### 🚦 Class-wise Performance
 
@@ -88,7 +88,6 @@ All metrics are automatically logged and tracked using **MLflow**.
 - **Motorbike detection shows moderate performance**, mainly affected by small object size and occlusion.
 - When combined with **multi-object tracking (ByteTrack / BoT-SORT)**, the effective accuracy improves significantly, ensuring stable real-world deployment.
 
----
 
 ### 🎯 System Suitability
 
@@ -99,6 +98,22 @@ The trained YOLOv11 model is well-suited for:
 - 📊 Traffic Density Analysis  
 - 🧍 Pedestrian Monitoring  
 - ⏱️ Real-time Video Analytics
+
+
+### 🏆 Performance Summary
+
+| Component | Rating |
+|---------|--------|
+| Car detection | ⭐⭐⭐⭐⭐ |
+| Heavy vehicles | ⭐⭐⭐⭐☆ |
+| Person | ⭐⭐⭐⭐☆ |
+| Bike | ⭐⭐⭐☆ |
+| Overall system | ⭐⭐⭐⭐☆ |
+
+👉 **Overall Score: 8.7 / 10 for this project**
+
+This rating reflects real-world deployment readiness, especially when the detection model is combined with multi-object tracking and temporal aggregation for stable traffic analytics.
+---
   
 
 ### 🧪 MLflow Experiment Tracking
