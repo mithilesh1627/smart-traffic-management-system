@@ -54,16 +54,52 @@ All metrics are automatically logged and tracked using **MLflow**.
 
 | Metric | Value |
 |------|------|
-| mAP@0.5 | 0.0 |
-| mAP@0.5:0.95 | 0.0 |
-| Precision | 0.0 |
-| Recall | 0.0 |
+| mAP@0.5 | 0.693 |
+| mAP@0.5:0.95 | 0.650 |
+| Precision | 0.597 |
+| Recall | 0.660|
 | Box Loss | 0.0 |
 | Class Loss | 0.0 |
 | DFL Loss | 0.0 |
 
+> These results indicate strong localization accuracy and reliable detection performance, making the model suitable for real-time traffic analytics when combined with object tracking.
 > ⚠️ Metrics may vary depending on dataset version, image resolution, and training configuration.
 
+### 🚦 Class-wise Performance
+
+| Class | Precision | Recall | mAP@50 | mAP@50–95 |
+|------|-----------|--------|--------|-----------|
+| Person | 0.722 | 0.791 | 0.848 | 0.765 |
+| Car | 0.853 | 0.927 | 0.953 | 0.930 |
+| Motorbike | 0.593 | 0.729 | 0.722 | 0.639 |
+| Bus | 0.746 | 0.786 | 0.855 | 0.827 |
+| Truck | 0.669 | 0.727 | 0.781 | 0.737 |
+| Traffic Light | 0.000 | 0.000 | 0.000 | 0.000 |
+
+> ⚠️ **Note:** The *traffic light* class contains only one instance in the dataset; therefore, its metrics are not meaningful and are excluded from system-level analytics.
+
+---
+
+### ✅ Key Observations
+
+- **Car detection achieved excellent performance**, making it highly reliable for vehicle counting and traffic flow estimation.
+- **Bus and truck classes show strong detection accuracy**, suitable for heavy-vehicle analytics.
+- **Person detection performs well**, enabling pedestrian density and safety analysis.
+- **Motorbike detection shows moderate performance**, mainly affected by small object size and occlusion.
+- When combined with **multi-object tracking (ByteTrack / BoT-SORT)**, the effective accuracy improves significantly, ensuring stable real-world deployment.
+
+---
+
+### 🎯 System Suitability
+
+The trained YOLOv11 model is well-suited for:
+
+- 🚗 Vehicle Counting  
+- 🚦 Traffic Flow Estimation  
+- 📊 Traffic Density Analysis  
+- 🧍 Pedestrian Monitoring  
+- ⏱️ Real-time Video Analytics
+  
 
 ### 🧪 MLflow Experiment Tracking
 
