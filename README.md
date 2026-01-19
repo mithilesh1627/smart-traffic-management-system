@@ -112,7 +112,8 @@ The trained YOLOv11 model is well-suited for:
 
 👉 **Overall Score: 8.7 / 10 for this project**
 
-This rating reflects real-world deployment readiness, especially when the detection model is combined with multi-object tracking and temporal aggregation for stable traffic analytics.
+  This rating reflects real-world deployment readiness, especially when the detection model is combined with multi-object tracking and temporal aggregation for stable traffic analytics.
+
 ---
   
 
