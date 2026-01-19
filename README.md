@@ -5,7 +5,6 @@
 This project implements a production-grade **Smart Traffic Management System** that processes traffic videos to detect, track, and analyze vehicles. The system is fully automated using **Apache Airflow**, supports **dataset versioning with DVC**, and tracks experiments using **MLflow**.
 
 
-
 ## 🎯 Problem Statement & Motivation
 
 Urban traffic monitoring systems often rely on manual analysis or fragmented tools,
