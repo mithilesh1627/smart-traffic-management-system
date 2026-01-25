@@ -5,7 +5,6 @@ from utils.video_reader import VideoReader
 from utils.yolo_tracker import YOLOTracker
 from utils.metrics_aggregator import MetricsAggregator
 from utils.mongo_writer import MongoWriter
-from utils.mlflow_tracker import MLflowTracker
 
 from traffic_metrics.vehicle_count import VehicleCounter
 from traffic_metrics.flow import FlowEstimator
@@ -37,16 +36,8 @@ def main():
     args = parse_args()
 
     video = VideoReader(args.video)
-    tracker = YOLOTracker()  #  traffic classes filtered inside this
+    tracker = YOLOTracker()  
     mongo_writer = MongoWriter(MONGO_URI)
-
-    mlflow_tracker = MLflowTracker(
-        experiment_name="Smart_Traffic_Inference",
-        camera_id=CAMERA_ID,
-        model_name="yolo11n",
-        metric_interval=METRIC_INTERVAL_SEC
-    )
-
     vehicle_counter = VehicleCounter(tracker.class_names)
     flow_estimator = FlowEstimator(interval_sec=METRIC_INTERVAL_SEC)
     density_calculator = DensityCalculator(ROI_AREA_PIXELS)
@@ -84,12 +75,7 @@ def main():
             print(doc)
             if doc:
                 mongo_writer.write(doc)
-                mlflow_tracker.log_metrics(
-                    flow=doc["flow"],
-                    density=doc["density"],
-                    vehicle_count=doc["vehicle_count_interval"]
-                )
-
+                
             draw_tracks(frame, detections, tracker.class_names)
             video_writer.write(frame)
     except Exception as e:
@@ -98,8 +84,6 @@ def main():
     finally:
         video.release()
         video_writer.release()
-        mlflow_tracker.close()
-
 
 
 if __name__ == "__main__":

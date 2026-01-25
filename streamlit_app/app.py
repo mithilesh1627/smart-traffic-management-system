@@ -27,7 +27,7 @@ with st.sidebar:
     st.divider()
     
     if st.button("Live Traffic", use_container_width=True):
-        st.session_state.page = "live"
+        st.session_state.page = "live_traffic"
         st.rerun()
         
     if st.button("Hourly Traffic Dashboard", use_container_width=True):
@@ -43,8 +43,6 @@ with st.sidebar:
         st.rerun()
     
     
-
-
 # ---------------- ROUTER ----------------
 if st.session_state.page == "home":
     show_home()

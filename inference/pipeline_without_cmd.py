@@ -71,9 +71,8 @@ def main():
     finally:
         video.release()
         video_writer.release()
-        mongo_writer.close()
+        # mongo_writer.close()
         print(f"\nProcessed video saved to: {processed_video_path}")
-
 
 if __name__ == "__main__":
     main()

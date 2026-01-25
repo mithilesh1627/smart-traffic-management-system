@@ -39,7 +39,7 @@ def show_video_analyzer():
     st.video(str(video_path))
     
     if st.button(" Process Video"):
-        with st.spinner("Running traffic inference..."):
+        with st.spinner("Running traffic inference on CPU..."):
             run_video_inference(video_path)
 
         st.success("Processing completed")

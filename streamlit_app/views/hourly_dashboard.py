@@ -21,7 +21,7 @@ def show_hourly_dashboard():
 
     st.info(
         "If no data is visible on this page, it means the **Airflow inference_analytics DAG** "
-        "has not produced any aggregated results in the last 1 hour."
+        "has not produced any aggregated results."
     )
 
     # ---------------- MONGO CONNECTION ----------------
