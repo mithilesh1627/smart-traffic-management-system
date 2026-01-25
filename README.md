@@ -661,7 +661,7 @@ Experiment: YOLO_Traffic_Training
     │   ├── epochs = 50
     │   ├── imgsz = 640
     │   ├── batch = 16
-    │   └── model = yolov8n.pt
+    │   └── model = yolov11n.pt
     │
     ├── Metrics
     │   ├── map50
