@@ -17,6 +17,12 @@ that:
 - Automates training and inference using MLOps best practices
 - Enables rapid experimentation and deployment of CV models
 
+## 🚀 TL;DR (For Recruiters)
+
+• End-to-end Computer Vision + MLOps system  
+• Automated training, validation, and inference using Airflow  
+• Full experiment & dataset traceability using MLflow + DVC  
+• Designed with real-world deployment and scalability
 
 ## ✨ Key Features
 
