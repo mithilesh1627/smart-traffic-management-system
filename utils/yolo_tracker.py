@@ -2,7 +2,7 @@ from ultralytics import YOLO
 from utils.config import ALLOWED_CLASSES,TRAINED_MODEL
 class YOLOTracker:
     def __init__(self):
-        self.model = YOLO('yolo11n.pt')
+        self.model = YOLO(TRAINED_MODEL)
         self.class_names = self.model.names
 
     def track(self, frame):

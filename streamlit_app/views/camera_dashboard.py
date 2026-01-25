@@ -8,25 +8,25 @@ def show_camera_dashboard():
     st_autorefresh(interval=60_000, key="camera_refresh")
     st.header("📊 Camera-wise Traffic Dashboard")
 
-    # ---------- LOAD ALL DATA ----------
+   
     all_df = load_metrics(MONGO_URI, DB_NAME, COLLECTION_NAME)
 
     if all_df is None or all_df.empty:
         st.warning("No camera data available")
         return
 
-    # ---------- CAMERA SELECTOR ----------
+    
     camera_ids = sorted(all_df["camera_id"].dropna().unique().tolist())
     camera_id = st.selectbox("Select Camera", camera_ids)
 
-    # ---------- FILTER ----------
+   
     df = all_df[all_df["camera_id"] == camera_id]
 
     if df.empty:
         st.warning("No data for selected camera")
         return
 
-    # ---------- KPIs ----------
+    
     col1, col2, col3 = st.columns(3)
 
     col1.metric("Avg Flow", round(df["flow"].mean(), 2))
@@ -35,6 +35,6 @@ def show_camera_dashboard():
 
     st.divider()
 
-    # ---------- CHARTS ----------
+    
     traffic_charts(df)
     vehicle_count_chart(df)

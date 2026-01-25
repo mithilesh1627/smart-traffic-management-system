@@ -44,7 +44,7 @@ def show_video_analyzer():
 
         st.success("Processing completed")
 
-        # ---------------- METRICS ----------------
+        
         df = load_metrics(
             MONGO_URI,
             DB_NAME,
@@ -57,7 +57,6 @@ def show_video_analyzer():
             vehicle_count_chart(df)
 
             st.subheader(" Processed Output")
-            # st.write(UPLOAD_PROCESSED_DIR / f"processed_{video_path.name}")
             stream_video(
                 video_path=UPLOAD_PROCESSED_DIR / f"processed_{video_path.name}",
                 frame_skip=5,

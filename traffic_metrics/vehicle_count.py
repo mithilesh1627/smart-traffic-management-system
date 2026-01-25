@@ -10,9 +10,9 @@ class VehicleCounter:
         self.class_names = class_names
         self.track_ttl_sec = track_ttl_sec
 
-        # State
-        self.active_tracks = {}          # track_id -> last_seen_time
-        self.counted_ids = set()         # track_ids already counted
+        
+        self.active_tracks = {}          
+        self.counted_ids = set()         
         self.counts = defaultdict(int)
 
     def update(self, detections):
@@ -37,13 +37,13 @@ class VehicleCounter:
             seen_track_ids.add(track_id)
             self.active_tracks[track_id] = now
 
-            # Count only once per track lifecycle
+            
             if track_id not in self.counted_ids:
                 class_name = self.class_names.get(class_id, "unknown")
                 self.counts[class_name] += 1
                 self.counted_ids.add(track_id)
 
-        # -------- AUTO EXPIRE TRACKS --------
+        
         expired_tracks = [
             tid for tid, last_seen in self.active_tracks.items()
             if now - last_seen > self.track_ttl_sec

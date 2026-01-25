@@ -45,17 +45,17 @@ class MetricsAggregator:
 
         self.interval_density_values.append(density)
 
-        # --- Flush window ---
+        
         now = time.time()
         if now - self.last_flush_time >= self.interval_sec:
             doc = {
                 "camera_id": self.camera_id,
                 "timestamp": datetime.utcnow(),
 
-                # cumulative count
+                
                 "vehicle_count_total": after,
 
-                # interval count
+                
                 "vehicle_count_interval": interval_delta,
 
                 "flow": (
@@ -68,12 +68,12 @@ class MetricsAggregator:
                 ),
             }
 
-            # reset window
+            
             self.interval_flow_values.clear()
             self.interval_density_values.clear()
             self.interval_vehicle_delta.clear()
 
-            # avoid time drift
+            
             self.last_flush_time += self.interval_sec
 
             return doc

@@ -11,11 +11,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- SESSION STATE ----------------
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-# ---------------- SIDEBAR ----------------
+
 st.sidebar.title("🚦 Smart Traffic AI")
 st.sidebar.caption("AI-powered traffic monitoring")
 
@@ -43,7 +43,7 @@ with st.sidebar:
         st.rerun()
     
     
-# ---------------- ROUTER ----------------
+
 if st.session_state.page == "home":
     show_home()
 

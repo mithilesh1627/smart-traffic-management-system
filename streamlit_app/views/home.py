@@ -111,7 +111,7 @@ It provides:
 
     st.divider()
 
-# ================= ACTIONS =================
+
     st.markdown("##  Explore the System")
 
     colA, colB, colC = st.columns(3)
@@ -137,7 +137,6 @@ It provides:
         
     st.divider()
 
-    # ================= FOOTER =================
     st.caption(
         "Built with Computer Vision & MLOps • Designed for real-world traffic intelligence",
         text_alignment="center"

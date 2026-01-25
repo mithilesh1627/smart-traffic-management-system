@@ -14,7 +14,7 @@ def extract_tracked_detections(results):
 
         for box, cls_id, track_id, conf in zip(boxes, cls_ids, track_ids, confs):
             if cls_id not in TRAFFIC_CLASS_IDS:
-                continue   #  ignore non-traffic objects
+                continue   
 
             x1, y1, x2, y2 = map(int, box)
             cx = (x1 + x2) // 2
