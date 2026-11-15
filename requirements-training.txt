@@ -1,0 +1,29 @@
+# Core Python
+numpy
+pandas
+
+# Computer Vision
+opencv-python==4.12.0
+ultralytics
+torch==2.9.1
+torchvision
+
+# MLOps
+mlflow==2.10.2
+dvc
+
+# Workflow Orchestration
+airflow==2.8.1
+
+# Visualization
+plotly
+streamlit
+
+# Database
+pymongo
+
+# Utilities
+tqdm
+pyyaml
+python-dotenv
+requests
