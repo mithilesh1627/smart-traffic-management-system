@@ -1,0 +1,85 @@
+LOCAL PANEL DEMO — SMART TRAFFIC MANAGEMENT SYSTEM
+
+Run these commands in PowerShell:
+
+1. Start the local services (safe to run again):
+   cd D:\2026\smart-traffic-management-system
+   powershell -ExecutionPolicy Bypass -File .\Start_Local_Demo.ps1
+
+2. Check readiness:
+   .\.venv-demo\Scripts\python.exe .\demo\check.py
+   Expect HTTP 200 for both apps and MLflow, and MongoDB OK.
+
+3. Process the prepared six-second unprocessed traffic clip:
+   powershell -ExecutionPolicy Bypass -File .\Run_Demo_Video.ps1
+   This runs actual inference, writes MongoDB records, manually aggregates the
+   last hour, and logs a fresh run in the Local_Panel_Demo MLflow experiment.
+
+4. Open http://127.0.0.1:8501
+   Show Analytics Dashboard, Camera Dashboard, and Hourly Traffic Dashboard.
+   These read the real local MongoDB records.
+   Analytics Dashboard > Show Video displays the most recent annotated output.
+
+5. Open http://127.0.0.1:5000
+   Select Local_Panel_Demo, then the latest local_video_inference run.
+   Show model/configuration parameters, wall time and records added.
+   These are fresh inference demo runs, not historical training runs.
+
+6. Optional browser-upload demonstration: http://127.0.0.1:8502
+   Choose Upload & Analyse, upload:
+   D:\2026\smart-traffic-management-system\.local-demo\panel_sample.mp4
+   Click Run Detection & ByteTrack Tracking.
+   Wait for the counts, annotated video and Download Annotated Video button.
+   This separate app stores results in memory; it does NOT populate MongoDB.
+
+The sample was extracted from:
+D:\2026\smart-traffic-management-system\raw_video\unprocessed_traffic_video.mp4
+It is six seconds, resized to 640 pixels wide at 10 FPS for a quick CPU demo.
+To process a different clip through the database workflow:
+   powershell -ExecutionPolicy Bypass -File .\Run_Demo_Video.ps1 -Video "D:\path\clip.mp4"
+Avoid processing the full large original during your panel presentation.
+
+STOP SERVICES:
+   powershell -ExecutionPolicy Bypass -File .\Stop_Local_Demo.ps1
+Start_Local_Demo.ps1 starts them again; records persist locally.
+
+MONGODB INSTALLATION:
+Portable local MongoDB server: .local-demo\bin\mongod.exe
+Database files: .local-demo\data
+Connection: mongodb://127.0.0.1:27017
+Database: traffic_system
+Raw collection: metrics
+Hourly collection: panel_hourly
+MongoDB runs as a local background process, not an automatically started Windows
+service. MongoDB Cloud and Compass are not required. Use the startup script after
+restarting Windows. All services bind to loopback only.
+
+WHAT TO SAY:
+"I will process a short raw traffic clip, show the annotated output and database
+records, and inspect the corresponding inference run in MLflow. This live setup
+uses base YOLO11n weights because the IDD-trained checkpoint is unavailable. The
+reported thesis metrics belong to the earlier trained model, not this live run."
+
+BOUNDARIES:
+- The trained best.pt is unavailable; this demo uses base yolo11n.pt.
+- Airflow is available through Start_Airflow_Demo.ps1; see demo/AIRFLOW_DEMO.md.
+  Run_Demo_Video.ps1 still runs aggregation manually and labels it as such.
+- The IDD dataset is not present, so training and a complete DVC data workflow
+  have not been reproduced here. Do not present screenshots as live execution.
+- USB/RTSP camera hardware was not validated. Use the tested video upload workflow.
+- Known interval/EOF/tracking limitations described in the thesis still apply.
+  Dashboard output is a functionality demo, not verified counting ground truth.
+- The source MLflow database was empty. Local_Panel_Demo is a separate new database.
+- YouTube playback requires internet; local video processing does not.
+
+TROUBLESHOOTING:
+Run demo\check.py first. Logs are in .local-demo\logs.
+If a service fails, read its *.console.log. Do not reinstall packages immediately.
+If ports are occupied by unrelated software, resolve that conflict before starting.
+Tested dependency versions are saved in demo\requirements-tested.txt.
+The environment uses your existing Miniconda Python; keep that installation.
+
+Official Airflow Windows prerequisites (WSL2 or Linux containers):
+https://airflow.apache.org/docs/apache-airflow/stable/installation/prerequisites.html
+Portable MongoDB installation documentation:
+https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows-zip/

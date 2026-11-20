@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 from datetime import datetime
 
 from utils.mongo_helper import get_collection
@@ -17,12 +18,14 @@ def show_hourly_dashboard():
     """
 
     st.title("🚦 Hourly Traffic Analytics")
-    st.caption("Aggregated using Airflow (1-hour time windows)")
-
-    st.info(
+    if os.getenv("LOCAL_PANEL_DEMO") == "1":
+        st.caption("Local demo: manually triggered aggregation of the last hour; Airflow is not running.")
+    else:
+        st.caption("Aggregated using Airflow (1-hour time windows)")
+        st.info(
         "If no data is visible on this page, it means the **Airflow inference_analytics DAG** "
         "has not produced any aggregated results."
-    )
+        )
 
     # ---------------- MONGO CONNECTION ----------------
     col = get_collection(

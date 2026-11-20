@@ -1,8 +1,10 @@
 import subprocess
+import sys
+from pathlib import Path
 
 def run_video_inference(video_path):
     command = [
-        "python",
+        sys.executable,
         "-m",
         "inference.pipeline", 
         "--video",
@@ -12,7 +14,8 @@ def run_video_inference(video_path):
     result = subprocess.run(
         command,
         capture_output=True,
-        text=True
+        text=True,
+        cwd=Path(__file__).resolve().parents[2],
     )
 
     if result.returncode != 0:

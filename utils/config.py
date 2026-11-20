@@ -69,4 +69,4 @@ MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
 MLFLOW_EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT_NAME")
 AGGREGATED_COLLECTION_NAME = os.getenv("AGGREGATED_COLLECTION_NAME","aggregated_metrics")
 # YOLO_TRAINED_MODEL
-TRAINED_MODEL=PROJECT_ROOT /"models" / "yolo" / "best.pt"
+TRAINED_MODEL=Path(os.getenv("TRAINED_MODEL", str(PROJECT_ROOT / "models" / "yolo" / "best.pt")))

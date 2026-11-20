@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+.local-demo/
+.venv-demo/
+demo/airflow_dags/project_dags
 __pycache__/
 *.py[codz]
 *$py.class

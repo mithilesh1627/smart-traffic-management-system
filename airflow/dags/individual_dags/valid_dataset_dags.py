@@ -7,7 +7,9 @@ from pathlib import Path
 PROJECT_ROOT = Path("/home/mithilesh/airflow/project")
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from pipelines.valid_dataset_builder import build_valid_dataset
+def build_valid_dataset():
+    from pipelines.valid_dataset_builder import build_valid_dataset as implementation
+    return implementation()
 
 default_args  = {
     'owner':'Mithilesh Chaurasiya',

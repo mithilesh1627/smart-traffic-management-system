@@ -80,6 +80,7 @@ def main():
             video_writer.write(frame)
     except Exception as e:
         print(f"[ERROR] An error occurred during video processing: {e}")
+        raise
     
     finally:
         video.release()

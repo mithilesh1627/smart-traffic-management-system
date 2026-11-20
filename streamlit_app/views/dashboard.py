@@ -22,9 +22,11 @@ def show_dashboard():
 
 
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Vehicles", int(vehicle_series.sum()))
-    col2.metric("Avg Vehicles / Interval", round(vehicle_series.mean(), 2))
-    col3.metric("Peak Traffic", int(vehicle_series.max()))
+    latest_by_camera = df.sort_values('timestamp').groupby('camera_id').tail(1)
+    latest_total = latest_by_camera['vehicle_count_total'].apply(lambda x: sum(x.values()) if isinstance(x, dict) else 0).sum()
+    col1.metric("Latest cumulative count", int(latest_total))
+    col2.metric("Average cumulative snapshot", round(vehicle_series.mean(), 2))
+    col3.metric("Largest cumulative snapshot", int(vehicle_series.max()))
     col4.metric(
         "Latest Timestamp",
         df.iloc[-1]["timestamp"].strftime("%H:%M:%S")
@@ -37,8 +39,12 @@ def show_dashboard():
     st.divider()
     st.subheader("Processed Traffic Video")
     if st.checkbox("Show Video"):
+        videos = sorted(UPLOAD_PROCESSED_DIR.glob('processed_*.mp4'), key=lambda p: p.stat().st_mtime, reverse=True)
+        if not videos:
+            st.info('Process a video first to see its annotated output.')
+            return
         stream_video(
-            UPLOAD_PROCESSED_DIR / "processed_Road_traffic_video.mp4",
+            videos[0],
             frame_skip=5,
             resize_width=900
         )

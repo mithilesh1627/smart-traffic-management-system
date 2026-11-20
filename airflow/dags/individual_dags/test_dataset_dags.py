@@ -5,7 +5,9 @@ from datetime import datetime
 import sys
 PROJECT_ROOT = Path("/home/mithilesh/airflow/project")
 sys.path.insert(0, str(PROJECT_ROOT))
-from pipelines.test_dataset_builder import build_test_dataset
+def build_test_dataset():
+    from pipelines.test_dataset_builder import build_test_dataset as implementation
+    return implementation()
 
 default_args  = {
     'owner':'Mithilesh Chaurasiya',

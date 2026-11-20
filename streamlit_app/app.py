@@ -1,5 +1,6 @@
 import streamlit as st
 import sys
+import os
 from pathlib import Path
 
 # Add project root and streamlit_app directory to python path
@@ -25,8 +26,8 @@ def safe_load_view(module_name, func_name):
         mod = __import__(f"views.{module_name}", fromlist=[func_name])
         return getattr(mod, func_name)
     except Exception as e:
-        def error_view():
-            st.error(f"⚠️ Unable to load {module_name}: {e}")
+        def error_view(error=e):
+            st.error(f"⚠️ Unable to load {module_name}: {error}")
             st.info(
                 "This page requires local infrastructure (MongoDB, .env configuration, or a connected camera). "
                 "For the self-contained live demo, please run `streamlit_app/app_live.py`."
@@ -44,6 +45,8 @@ if "page" not in st.session_state:
 
 st.sidebar.title("🚦 Smart Traffic AI")
 st.sidebar.caption("AI-powered traffic monitoring")
+if os.getenv("LOCAL_PANEL_DEMO") == "1":
+    st.sidebar.info("Local panel demo: base YOLO11n weights. These runs do not reproduce the reported IDD validation scores.")
 
 with st.sidebar:
     if st.button("Home", use_container_width=True):

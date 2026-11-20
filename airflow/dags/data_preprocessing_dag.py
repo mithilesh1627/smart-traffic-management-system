@@ -1,14 +1,5 @@
 from airflow.decorators import task, dag
 from datetime import datetime
-from pipelines.dataset_cleaner import clean_dataset
-from pipelines.dataset_validator import validate_labels_required, validate_structure_only
-from pipelines.mark_dataset_ready import mark_dataset_ready
-from pipelines.train_dataset_builder import build_train_dataset
-from pipelines.test_dataset_builder import build_test_dataset
-from pipelines.valid_dataset_builder import build_valid_dataset
-from pipelines.dataset_labeling import auto_labeling
-from pipelines.dataset_validator import validate_structure_only
-from utils.airflow_config import DATASET_DIR, TEST_SPLIT_METADATA
 
 default_args ={
         "owner": "Mithilesh Chaurasiya",
@@ -26,6 +17,7 @@ default_args ={
 def build_dataset_dag():
     @task
     def preprocess():
+        from utils.airflow_config import DATASET_DIR, TEST_SPLIT_METADATA
         print("Preprocessing dataset...")
         print("Checking dataset paths...")
         print(f"DATASET_DIR: {DATASET_DIR}")
@@ -45,33 +37,41 @@ def build_dataset_dag():
     @task
     def build_train_dataset_task():
         
+        from pipelines.train_dataset_builder import build_train_dataset
         build_train_dataset()
 
 
     @task
     def build_test_dataset_task():
+        from pipelines.test_dataset_builder import build_test_dataset
         build_test_dataset()
 
     @task
     def build_valid_dataset_task():
+        from pipelines.valid_dataset_builder import build_valid_dataset
         build_valid_dataset()
 
     @task
     def auto_labeling_task():
+        from pipelines.dataset_labeling import auto_labeling
         auto_labeling()
     @task
     def validate_structure_task():
+        from pipelines.dataset_validator import validate_structure_only
         validate_structure_only()
 
     @task
     def mark_dataset_ready_task():
+        from pipelines.mark_dataset_ready import mark_dataset_ready
         mark_dataset_ready()
 
     @task
     def validate_labels_task():
+        from pipelines.dataset_validator import validate_labels_required
         validate_labels_required()
     @task
     def clean_unlabeled_images_task():
+        from pipelines.dataset_cleaner import clean_dataset
         clean_dataset()
 
     raw = preprocess()

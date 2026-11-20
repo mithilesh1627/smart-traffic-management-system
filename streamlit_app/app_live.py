@@ -1,5 +1,6 @@
 import streamlit as st
 import sys
+import os
 from pathlib import Path
 
 # Add project root and streamlit_app directory to python path safely
@@ -54,8 +55,8 @@ st.sidebar.divider()
 
 # Deployment and Environment Info
 with st.sidebar.expander("ℹ️ Demo Environment", expanded=True):
-    st.markdown("""
-    - **Host:** Streamlit Community Cloud
+    st.markdown(f"""
+    - **Host:** {os.getenv('DEMO_HOST_LABEL', 'Streamlit Community Cloud')}
     - **Compute:** CPU-only inference
     - **Model:** YOLOv11n (Base weights)
     - **Tracker:** ByteTrack
